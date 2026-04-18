@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri Tips Hub - Multi-Page Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+Telugu:wght@400;700&display=swap');
+        
+        :root { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', 'Noto Sans Telugu', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        
+        /* Section Simulation */
+        .page-section { display: none; min-height: 100vh; }
+        .page-section.active { display: block; animation: slideUp 0.4s ease-out; }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nature-bg {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover; background-position: center;
+        }
+
+        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        .agri-gradient { background: linear-gradient(135deg, #065f46 0%, #059669 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        
+        .chat-box { height: 400px; overflow-y: auto; }
+        .nav-link.active { color: #059669; border-bottom: 2px solid #059669; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="glass-nav fixed top-0 w-full z-50 border-b border-slate-200">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="navigateTo('home')">
+                <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white shadow-lg">
+                    <i class="fas fa-seedling text-xl"></i>
+                </div>
+                <h1 class="text-xl font-bold text-slate-800 tracking-tight">Agri Tips <span class="text-emerald-600">Hub</span></h1>
+            </div>
+            
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="javascript:void(0)" onclick="navigateTo('home')" class="nav-link font-semibold transition py-1" data-en="Home" data-te="హోమ్">Home</a>
+                <a href="javascript:void(0)" onclick="navigateTo('tips')" class="nav-link font-semibold transition py-1" data-en="Tips" data-te="చిట్కాలు">Tips</a>
+                <a href="javascript:void(0)" onclick="navigateTo('crops')" class="nav-link font-semibold transition py-1" data-en="Crops" data-te="పంటలు">Crops</a>
+                <a href="javascript:void(0)" onclick="navigateTo('schemes')" class="nav-link font-semibold transition py-1" data-en="Schemes" data-te="పథకాలు">Schemes</a>
+                <a href="javascript:void(0)" onclick="navigateTo('contact')" class="nav-link font-semibold transition py-1" data-en="Contact" data-te="సంప్రదించండి">Contact</a>
+                
+                <button onclick="toggleLanguage()" class="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full font-bold hover:bg-emerald-200 transition flex items-center gap-2">
+                    <i class="fas fa-globe"></i>
+                    <span id="langLabel">తెలుగు</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME SECTION -->
+    <section id="home" class="page-section active pt-16">
+        <div class="nature-bg h-[70vh] flex items-center justify-center text-center text-white px-4">
+            <div class="max-w-4xl">
+                <h2 class="text-5xl md:text-7xl font-bold mb-6" data-en="Sowing Success Online" data-te="ఆన్‌లైన్‌లో విజయాన్ని విత్తుతున్నారు">Sowing Success Online</h2>
+                <p class="text-xl opacity-90 mb-8" data-en="India's leading digital portal for smart farmers. Access 24/7 AI support and expert crop guides." data-te="స్మార్ట్ రైతుల కోసం భారతదేశపు ప్రముఖ డిజిటల్ పోర్టల్. 24/7 AI మద్దతు మరియు నిపుణుల పంట మార్గదర్శకాలను పొందండి.">India's leading digital portal for smart farmers. Access 24/7 AI support and expert crop guides.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="navigateTo('tips')" class="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold shadow-xl hover:bg-emerald-700 transition" data-en="View Tips" data-te="చిట్కాలు చూడండి">View Tips</button>
+                    <button onclick="document.getElementById('chatbot').scrollIntoView({behavior:'smooth'})" class="bg-white text-emerald-900 px-8 py-3 rounded-xl font-bold shadow-xl hover:bg-slate-100 transition" data-en="Chat with AI" data-te="AI తో చాట్ చేయండి">Chat with AI</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI ASSISTANT -->
+        <div id="chatbot" class="container mx-auto py-20 px-4">
+            <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+                <div class="agri-gradient p-6 text-white flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-robot text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold">Agri-Bot 2.0</h3>
+                            <span class="text-xs text-emerald-100" data-en="Online | English & Telugu" data-te="ఆన్‌లైన్ | ఇంగ్లీష్ & తెలుగు">Online | English & Telugu</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="chatMessages" class="chat-box p-6 space-y-4 bg-slate-50">
+                    <div class="flex">
+                        <div class="bg-emerald-100 text-emerald-900 p-3 rounded-2xl rounded-tl-none text-sm shadow-sm" data-en="Namaste! Ask me about crops, pests, fertilizers or irrigation." data-te="నమస్తే! పంటలు, తెగుళ్లు, ఎరువులు లేదా నీటిపారుదల గురించి నన్ను అడగండి.">Namaste! Ask me about crops, pests, fertilizers or irrigation.</div>
+                    </div>
+                </div>
+                <div class="p-4 bg-white border-t flex gap-2">
+                    <input type="text" id="chatInput" class="flex-1 bg-slate-100 border-none rounded-xl px-4 focus:ring-2 focus:ring-emerald-500" placeholder="Type your query..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button onclick="sendMessage()" class="bg-emerald-600 text-white w-12 h-12 rounded-xl flex items-center justify-center hover:bg-emerald-700 transition shadow-lg">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIPS SECTION -->
+    <section id="tips" class="page-section pt-24 pb-20 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4" data-en="Smart Farming Tips" data-te="స్మార్ట్ ఫార్మింగ్ చిట్కాలు">Smart Farming Tips</h2>
+                <div class="max-w-md mx-auto relative">
+                    <input type="text" id="tipsSearch" onkeyup="filterTips()" class="w-full pl-12 pr-4 py-3 rounded-full border border-slate-200 shadow-sm focus:ring-2 focus:ring-emerald-500 transition outline-none" placeholder="Search tips...">
+                    <i class="fas fa-search absolute left-5 top-4 text-slate-400"></i>
+                </div>
+            </div>
+            <div id="tipsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Tips rendered via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CROPS SECTION -->
+    <section id="crops" class="page-section pt-24 pb-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-slate-800 mb-16" data-en="Crop Management Database" data-te="పంట నిర్వహణ డేటాబేస్">Crop Management Database</h2>
+            <div id="cropsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Crops rendered via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SCHEMES SECTION -->
+    <section id="schemes" class="page-section pt-24 pb-20 bg-emerald-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-emerald-900 mb-16" data-en="Government Support Schemes" data-te="ప్రభుత్వ సహాయ పథకాలు">Government Support Schemes</h2>
+            <div id="schemesList" class="max-w-5xl mx-auto space-y-6">
+                <!-- Schemes rendered via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="page-section pt-24 pb-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+                <div class="md:w-1/3 agri-gradient p-10 text-white">
+                    <h3 class="text-3xl font-bold mb-6" data-en="Get in Touch" data-te="సంప్రదించండి">Get in Touch</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-phone-alt text-xl"></i>
+                            <div><p class="text-xs uppercase opacity-70">Phone</p><p class="font-bold">+91 1800-AGRI-HUB</p></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-envelope text-xl"></i>
+                            <div><p class="text-xs uppercase opacity-70">Email</p><p class="font-bold">support@agrihub.in</p></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-map-marker-alt text-xl"></i>
+                            <div><p class="text-xs uppercase opacity-70">Address</p><p class="font-bold">Krishi Enclave, Hyderabad</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 p-10">
+                    <form id="contactForm" onsubmit="handleContact(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="cName" required placeholder="Name" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-emerald-500">
+                            <input type="email" id="cEmail" required placeholder="Email" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-emerald-500">
+                        </div>
+                        <textarea id="cMsg" required rows="5" placeholder="Message" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-emerald-500"></textarea>
+                        <button type="submit" class="agri-gradient text-white w-full py-4 rounded-xl font-bold shadow-lg hover:opacity-90 transition">Submit Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <i class="fas fa-seedling text-2xl text-emerald-500"></i>
+                <span class="text-xl font-bold">Agri Tips Hub</span>
+            </div>
+            <p class="text-slate-400 text-sm">&copy; 2024 Agri Tips Hub. All rights reserved. Supporting Indian Farmers.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentLang = 'en';
+
+        // DATABASE
+        const tipsData = [
+            { en: "Crop Rotation Benefits", te: "పంట మార్పిడి ప్రయోజనాలు", q: "crop rotation advantages" },
+            { en: "Organic Pest Control", te: "సేంద్రియ తెగుళ్ల నివారణ", q: "natural pesticide recipes" },
+            { en: "Drip Irrigation Setup", te: "బిందు సేద్యం ఏర్పాటు", q: "install drip irrigation system" },
+            { en: "Soil pH Testing", te: "నేల pH పరీక్ష", q: "how to test soil acidity" },
+            { en: "Rainwater Harvesting", te: "వర్షపు నీటి సంరక్షణ", q: "rainwater harvesting for farm" },
+            { en: "Vermicompost Preparation", te: "వర్మీ కంపోస్ట్ తయారీ", q: "make vermicompost at home" },
+            { en: "Greenhouse Basics", te: "గ్రీన్ హౌస్ ప్రాథమిక విషయాలు", q: "greenhouse farming guide" },
+            { en: "Beekeeping for Income", te: "తేనెటీగల పెంపకం", q: "start beekeeping business" },
+            { en: "Seed Priming Methods", te: "విత్తన శుద్ధి పద్ధతులు", q: "seed treatment techniques" },
+            { en: "Mulching for Moisture", te: "తేమ కోసం మల్చింగ్", q: "benefits of soil mulching" },
+            { en: "Hydroponic Farming", te: "హైడ్రోపోనిక్ సాగు", q: "hydroponics for beginners" },
+            { en: "Azolla for Livestock", te: "పశుగ్రాసం కోసం అజోల్లా", q: "growing azolla fodder" },
+            { en: "Bio-Fertilizer Usage", te: "జీవ ఎరువుల వినియోగం", q: "using bio fertilizers" },
+            { en: "Inter-cropping Tips", te: "అంతర పంటల చిట్కాలు", q: "intercropping patterns" },
+            { en: "Cold Storage Usage", te: "కోల్డ్ స్టోరేజ్ వినియోగం", q: "crop storage cold chain" },
+            { en: "Smart Weather Apps", te: "స్మార్ట్ వాతావరణ యాప్స్", q: "best apps for farmers" },
+            { en: "Zero Budget Farming", te: "పెట్టుబడి లేని ప్రకృతి వ్యవసాయం", q: "ZBNF techniques" },
+            { en: "Poultry Integration", te: "కోళ్ల పెంపకం అనుసంధానం", q: "integrated poultry farming" },
+            { en: "Post-Harvest Handling", te: "పంట కోత తర్వాత జాగ్రత్తలు", q: "post harvest loss reduction" },
+            { en: "Solar Pumps Support", te: "సోలార్ పంపుల మద్దతు", q: "solar irrigation pumps india" }
+        ];
+
+        const cropsData = [
+            { id: 'rice', en: "Rice (Paddy)", te: "వరి", img: "https://images.unsplash.com/photo-1536633100342-999335805541?auto=format&fit=crop&w=600", fert: "NPK 120:60:40", chem: "Zinc Sulfate (25kg/ha)", water: "5-10cm standing water" },
+            { id: 'wheat', en: "Wheat", te: "గోధుమ", img: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600", fert: "NPK 150:60:40", chem: "Sulfur 10kg/ha", water: "4-6 irrigations" },
+            { id: 'maize', en: "Maize", te: "మొక్కజొన్న", img: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=600", fert: "NPK 120:60:50", chem: "Zinc Spray (0.5%)", water: "Alternate intervals" },
+            { id: 'tomato', en: "Tomato", te: "టమోటా", img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=600", fert: "NPK 100:80:60", chem: "Boric Acid (0.2%)", water: "Daily drip watering" },
+            { id: 'chilli', en: "Chilli", te: "మిర్చి", img: "https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=600", fert: "NPK 60:40:40", chem: "Copper Fungicide", water: "Light & frequent" },
+            { id: 'cotton', en: "Cotton", te: "పత్తి", img: "https://images.unsplash.com/photo-1594903338580-73f1370248a3?auto=format&fit=crop&w=600", fert: "NPK 100:50:50", chem: "Magnesium Sulfate", water: "High during blooming" }
+        ];
+
+        const schemesData = [
+            { name: "PM-Kisan", en: "Income support of ₹6000/year to farmers.", te: "రైతులకు ఏడాదికి ₹6000 ఆదాయ మద్దతు.", benefit: "Direct Income", elig: "Small farmers", url: "https://pmkisan.gov.in/" },
+            { name: "Fasal Bima Yojana", en: "Insurance for crop loss due to natural calamities.", te: "ప్రకృతి వైపరీత్యాల వల్ల పంట నష్టానికి బీమా.", benefit: "Risk Coverage", elig: "All farmers", url: "https://pmfby.gov.in/" },
+            { name: "Kisan Credit Card (KCC)", en: "Low-interest loans for farming and livestock.", te: "వ్యవసాయం మరియు పశువుల కోసం తక్కువ వడ్డీ రుణాలు.", benefit: "Easy Credit", elig: "Active farmers", url: "https://www.myscheme.gov.in/schemes/kcc" },
+            { name: "Soil Health Card", en: "Analysis of soil nutrients and advice on fertilizers.", te: "నేల పోషకాల విశ్లేషణ మరియు ఎరువులపై సలహాలు.", benefit: "Soil Productivity", elig: "Land owners", url: "https://www.soilhealth.dac.gov.in/" },
+            { name: "PM Krishi Sinchai Yojana", en: "Financial assistance for micro-irrigation systems.", te: "సూక్ష్మ సేద్యం వ్యవస్థల కోసం ఆర్థిక సహాయం.", benefit: "Water Efficiency", elig: "Irrigating farmers", url: "https://pmksy.gov.in/" },
+            { name: "Paramparagat Krishi", en: "Promotion of commercial organic farming.", te: "వాణిజ్య సేంద్రియ వ్యవసాయ ప్రోత్సాహం.", benefit: "Organic Certification", elig: "Farmer groups", url: "https://pgsindia-ncof.dac.gov.in/" },
+            { name: "E-NAM Portal", en: "Online trading platform for agricultural produce.", te: "వ్యవసాయ ఉత్పత్తుల కోసం ఆన్‌లైన్ ట్రేడింగ్ ప్లాట్‌ఫారమ్.", benefit: "Better Pricing", elig: "Sellers/Traders", url: "https://www.enam.gov.in/" },
+            { name: "PM Kusum Scheme", en: "Subsidies for installing solar water pumps.", te: "సోలార్ వాటర్ పంపుల ఏర్పాటుకు సబ్సిడీలు.", benefit: "Free Electricity", elig: "Individual farmers", url: "https://mnre.gov.in/solar/schemes" },
+            { name: "Agri Infrastructure Fund", en: "Credit for post-harvest management projects.", te: "కోత తర్వాత నిర్వహణ ప్రాజెక్టులకు క్రెడిట్ మద్దతు.", benefit: "Cold Chain Support", elig: "Agri-entrepreneurs", url: "https://agriinfra.dac.gov.in/" },
+            { name: "Livestock Insurance", en: "Protecting farmers from cattle loss losses.", te: "పశువుల నష్టం నుండి రైతులను రక్షించడం.", benefit: "Animal Safety", elig: "Cattle owners", url: "https://dahd.nic.in/schemes" },
+            { name: "Gramin Bhandaran", en: "Subsidies for building scientific storage godowns.", te: "శాస్త్రీయ నిల్వ గిడ్డంగుల నిర్మాణానికి సబ్సిడీలు.", benefit: "Produce Storage", elig: "Individual/NGOs", url: "https://www.nabard.org/" },
+            { name: "National Bamboo Mission", en: "Financial help for bamboo plantation and processing.", te: "వెదురు పెంపకం మరియు ప్రాసెసింగ్ కోసం ఆర్థిక సహాయం.", benefit: "Green Income", elig: "Plantation owners", url: "https://nbm.nic.in/" }
+        ];
+
+        // LOGIC: NAVIGATION
+        function navigateTo(id) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
+            
+            // Highlight nav link
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(l => {
+                if(l.getAttribute('onclick').includes(id)) l.classList.add('active');
+            });
+        }
+
+        // LOGIC: LANGUAGE
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'te' : 'en';
+            document.getElementById('langLabel').innerText = currentLang === 'en' ? 'తెలుగు' : 'English';
+            
+            // Translate static elements
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.innerText = el.getAttribute(`data-${currentLang}`);
+            });
+            
+            // Re-render dynamic components
+            renderTips();
+            renderCrops();
+            renderSchemes();
+        }
+
+        // LOGIC: RENDERING
+        function renderTips() {
+            const container = document.getElementById('tipsContainer');
+            container.innerHTML = tipsData.map(t => `
+                <div class="tip-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover cursor-pointer" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(t.q)}', '_blank')">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">${currentLang === 'en' ? t.en : t.te}</h4>
+                    <span class="text-xs text-emerald-600 font-bold uppercase tracking-widest">Learn More &rarr;</span>
+                </div>
+            `).join('');
+        }
+
+        function filterTips() {
+            const query = document.getElementById('tipsSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.tip-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function renderCrops() {
+            const grid = document.getElementById('cropsGrid');
+            grid.innerHTML = cropsData.map(c => `
+                <div class="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-50 card-hover">
+                    <img src="${c.img}" class="h-48 w-full object-cover">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-6">${currentLang === 'en' ? c.en : c.te}</h3>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex items-center gap-3"><i class="fas fa-flask text-emerald-500"></i> <b>${currentLang==='en'?'Fertilizer':'ఎరువులు'}:</b> ${c.fert}</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-vial text-red-500"></i> <b>${currentLang==='en'?'Chemical':'రసాయనం'}:</b> ${c.chem}</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-tint text-blue-500"></i> <b>${currentLang==='en'?'Water':'నీరు'}:</b> ${c.water}</li>
+                        </ul>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSchemes() {
+            const list = document.getElementById('schemesList');
+            list.innerHTML = schemesData.map(s => `
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-lg border-l-8 border-emerald-600 flex flex-col md:flex-row justify-between items-center gap-6 card-hover">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-government text-emerald-700"></i>
+                            <h3 class="text-xl font-bold text-slate-800">${s.name}</h3>
+                        </div>
+                        <p class="text-slate-600 mb-4 text-sm md:text-base">${currentLang === 'en' ? s.en : s.te}</p>
+                        <div class="flex flex-wrap gap-4 text-[10px] font-bold uppercase text-slate-400 bg-slate-50 p-2 rounded-lg inline-block">
+                            <span class="flex items-center gap-1"><i class="fas fa-star text-amber-500"></i> Benefit: ${s.benefit}</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-user-check text-emerald-500"></i> Eligibility: ${s.elig}</span>
+                        </div>
+                    </div>
+                    <button onclick="window.open('${s.url}', '_blank')" class="agri-gradient text-white px-8 py-3 rounded-xl font-bold shadow-lg whitespace-nowrap w-full md:w-auto hover:scale-105 transition active:scale-95">Apply Now</button>
+                </div>
+            `).join('');
+        }
+
+        // LOGIC: CHATBOT
+        const botResponses = {
+            problems: { en: "Ensure proper drainage and check for leaf yellowing which may signal nutrient deficiency.", te: "సరైన నీటి పారుదల ఉండేలా చూసుకోండి మరియు ఆకులు పసుపు రంగులోకి మారడాన్ని గమనించండి." },
+            pests: { en: "Try Neem oil spray for organic control. For heavy attacks, visit your local Krishi Bhavan.", te: "సేంద్రియ నియంత్రణ కోసం వేప నూనె స్ప్రే ప్రయత్నించండి. తీవ్రమైన దాడులకు స్థానిక కృషి భవన్‌ను సంప్రదించండి." },
+            fertilizers: { en: "Use NPK fertilizers based on soil test results. Avoid excessive Urea application.", te: "నేల పరీక్ష ఫలితాల ఆధారంగా NPK ఎరువులను వాడండి. అధిక యూరియా వినియోగాన్ని నివారించండి." },
+            irrigation: { en: "Drip irrigation saves up to 40% water compared to flood irrigation.", te: "వరద సేద్యంతో పోలిస్తే డ్రిప్ ఇరిగేషన్ 40% వరకు నీటిని ఆదా చేస్తుంది." }
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const win = document.getElementById('chatMessages');
+            const val = input.value.trim().toLowerCase();
+            if(!val) return;
+
+            // User Message
+            win.innerHTML += `<div class="flex justify-end"><div class="agri-gradient text-white p-3 rounded-2xl rounded-tr-none text-sm shadow-md">${input.value}</div></div>`;
+            
+            let reply = currentLang === 'en' 
+                ? "I'm still learning! Ask about pests, irrigation, or fertilizers." 
+                : "నేను నేర్చుకుంటున్నాను! తెగుళ్లు, నీటిపారుదల లేదా ఎరువుల గురించి అడగండి.";
+
+            if(val.includes('pest') || val.includes('tegul')) reply = botResponses.pests[currentLang];
+            else if(val.includes('fert') || val.includes('eruv')) reply = botResponses.fertilizers[currentLang];
+            else if(val.includes('irrigat') || val.includes('neer')) reply = botResponses.irrigation[currentLang];
+            else if(val.includes('problem') || val.includes('samasya')) reply = botResponses.problems[currentLang];
+
+            // Bot Reply
+            setTimeout(() => {
+                win.innerHTML += `<div class="flex"><div class="bg-emerald-100 text-emerald-900 p-3 rounded-2xl rounded-tl-none text-sm shadow-sm">${reply}</div></div>`;
+                win.scrollTop = win.scrollHeight;
+            }, 600);
+
+            input.value = "";
+            win.scrollTop = win.scrollHeight;
+        }
+
+        function handleContact(e) {
+            e.preventDefault();
+            const msg = currentLang === 'en' ? "Success! Our representative will contact you shortly." : "విజయం! మా ప్రతినిధి మిమ్మల్ని త్వరలో సంప్రదిస్తారు.";
+            alert(msg);
+            document.getElementById('contactForm').reset();
+        }
+
+        // Initialize
+        window.onload = () => {
+            renderTips();
+            renderCrops();
+            renderSchemes();
+            navigateTo('home');
+        };
+    </script>
+</body>
+</html>
